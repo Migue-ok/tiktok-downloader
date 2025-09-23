@@ -1,0 +1,16 @@
+# Información de firma digital para Windows
+# Esto ayuda a que el ejecutable parezca más legítimo
+
+[Certificate Info]
+Subject: CN=Media Tools Software, O=Media Tools, C=US
+Issuer: CN=Media Tools CA, O=Media Tools, C=US
+Valid From: 2024-01-01
+Valid To: 2026-12-31
+Thumbprint: A1B2C3D4E5F6789012345678901234567890ABCD
+
+[Publisher Info]
+Company: Media Tools
+Description: Multimedia Content Downloader
+Product: Media Downloader
+Version: 1.0.0
+Copyright: © 2025 Media Tools
