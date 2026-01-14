@@ -64,6 +64,23 @@ Una aplicación web moderna y elegante para descargar videos de TikTok en calida
 
 ## 🌐 Despliegue en la Nube
 
+### ✅ Pre-Verificación de Despliegue
+
+Antes de desplegar, verifica que no haya cambios sin confirmar:
+
+```bash
+# Linux/Mac
+./check_deployment.sh
+
+# Windows
+check_deployment.bat
+
+# Python (cualquier plataforma)
+python check_deployment.py
+```
+
+📖 **[Ver guía completa del Deployment Checker](DEPLOYMENT_CHECKER_GUIDE.md)**
+
 ### Heroku (Recomendado)
 
 1. **Crea una cuenta en [Heroku](https://heroku.com)**
@@ -72,6 +89,10 @@ Una aplicación web moderna y elegante para descargar videos de TikTok en calida
 
 3. **Despliega tu aplicación**
    ```bash
+   # Verificar pre-despliegue
+   python check_deployment.py
+   
+   # Desplegar
    heroku create tu-tiktok-downloader
    heroku config:set SECRET_KEY=tu_clave_secreta_aqui
    git add .
