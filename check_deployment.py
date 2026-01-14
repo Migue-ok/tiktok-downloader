@@ -30,12 +30,12 @@ def check_git_status():
             check=True
         )
         
-        uncommitted_changes = result.stdout.strip()
+        git_status_output = result.stdout.strip()
         
-        if uncommitted_changes:
+        if git_status_output:
             print("❌ Uncommitted changes detected!")
             print("\nThe following files have uncommitted changes:")
-            print(uncommitted_changes)
+            print(git_status_output)
             print("\n" + "="*60)
             print("Options:")
             print("  1. Commit changes: git add . && git commit -m 'Your message'")
@@ -56,15 +56,22 @@ def check_git_status():
 
 def check_dependencies():
     """Check if all required dependencies are installed"""
-    try:
-        import flask
-        import yt_dlp
-        print("✅ All required dependencies are installed.")
-        return True
-    except ImportError as e:
-        print(f"❌ Missing dependency: {e}")
+    required_modules = ['flask', 'yt_dlp']
+    missing_modules = []
+    
+    for module in required_modules:
+        try:
+            __import__(module)
+        except ImportError:
+            missing_modules.append(module)
+    
+    if missing_modules:
+        print(f"❌ Missing dependencies: {', '.join(missing_modules)}")
         print("Run: pip install -r requirements.txt")
         return False
+    
+    print("✅ All required dependencies are installed.")
+    return True
 
 def main():
     """Main deployment checker"""

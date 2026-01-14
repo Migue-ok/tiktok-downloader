@@ -34,7 +34,6 @@ if %errorlevel% neq 0 (
 )
 
 REM Check for uncommitted changes
-git status --porcelain > nul
 for /f %%i in ('git status --porcelain ^| find /c /v ""') do set COUNT=%%i
 
 if !COUNT! gtr 0 (
