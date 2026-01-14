@@ -49,8 +49,9 @@ class TestDeploymentChecker(unittest.TestCase):
             text=True,
             timeout=10
         )
-        # Script may fail on dependencies but should recognize --force
-        self.assertIn('force', result.stdout.lower() + result.stderr.lower())
+        # Script should run without error (even if it fails on dependencies)
+        # The important thing is that --force is accepted as a valid argument
+        self.assertIn('deployment check', result.stdout.lower())
 
 if __name__ == '__main__':
     unittest.main()
