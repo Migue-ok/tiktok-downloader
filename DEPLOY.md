@@ -8,6 +8,27 @@ Antes de desplegar, asegúrate de tener:
 - [ ] Código subido a GitHub
 - [ ] Archivos de configuración creados
 - [ ] Tests funcionando localmente
+- [ ] Sin cambios sin confirmar (uncommitted changes)
+
+### ✅ Verificación Pre-Despliegue
+
+Ejecuta el script de verificación antes de desplegar:
+
+```bash
+# Linux/Mac
+./check_deployment.sh
+
+# Windows
+check_deployment.bat
+
+# Python (cualquier plataforma)
+python check_deployment.py
+```
+
+Si tienes cambios sin confirmar, el script te alertará. Opciones:
+1. **Confirmar cambios**: `git add . && git commit -m "Tu mensaje"`
+2. **Guardar temporalmente**: `git stash`
+3. **Proceder de todos modos**: Usa `--force` flag
 
 ## 🌟 Heroku (Recomendado)
 
@@ -37,14 +58,19 @@ Antes de desplegar, asegúrate de tener:
    heroku config:set DEBUG=False
    ```
 
-5. **Desplegar**
+5. **Verificar pre-despliegue**
+   ```bash
+   python check_deployment.py
+   ```
+
+6. **Desplegar**
    ```bash
    git add .
    git commit -m "Deploy to Heroku"
    git push heroku main
    ```
 
-6. **Abrir aplicación**
+7. **Abrir aplicación**
    ```bash
    heroku open
    ```
