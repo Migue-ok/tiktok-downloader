@@ -93,13 +93,66 @@ Una aplicación web moderna y elegante para descargar videos de TikTok en calida
    - Build Command: `pip install -r requirements.txt`
    - Start Command: `gunicorn app:app`
 
+## 💻 Aplicación de Escritorio
+
+Además de la versión web, este proyecto incluye una **aplicación de escritorio** con interfaz gráfica (GUI) construida con Tkinter.
+
+### Características de la Aplicación de Escritorio
+
+- 🖥️ **Interfaz gráfica moderna** con diseño compacto
+- 📺 **Multi-plataforma** - YouTube, TikTok, Instagram, Facebook
+- 🎨 **Selección de formatos** - MP3, 1080p, 720p, 480p
+- 📂 **Carpeta personalizable** de descargas
+- 📊 **Barra de progreso animada** con indicadores visuales
+- 🚫 **Sin dependencias complejas** - Solo Python y yt-dlp
+
+### 📦 Empaquetar como Ejecutable
+
+Puedes crear un ejecutable independiente usando PyInstaller:
+
+```bash
+cd Youtube
+
+# Método 1: Usar el script automático (Recomendado)
+python build_multifile.py
+
+# Método 2: En Windows
+build_multifile.bat
+```
+
+**Documentación completa:**
+- 📖 [Guía Rápida de Build](Youtube/QUICKSTART.md) - 3 pasos simples
+- 📚 [Guía Completa de Build](Youtube/README_BUILD.md) - Documentación detallada
+- 🔧 [Guía de Optimización](OPTIMIZATION_GUIDE.md) - Detalles técnicos
+
+**Características del ejecutable:**
+- ✅ Sin ventana de consola
+- ✅ Múltiples archivos (carga rápida)
+- ✅ Optimizado (~70 MB)
+- ✅ Compatible Windows 7/8/10/11
+
+### Ejecutar Aplicación de Escritorio (Sin Empaquetar)
+
+```bash
+cd Youtube
+pip install yt-dlp
+python Youtube.py
+```
+
 ## 🔧 Tecnologías Utilizadas
 
+### Aplicación Web
 - **Backend**: Flask (Python)
 - **Descarga**: yt-dlp (fork mejorado de youtube-dl)
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
 - **Servidor**: Gunicorn
 - **Hosting**: Heroku, Railway, Render
+
+### Aplicación de Escritorio
+- **GUI**: Tkinter (incluido con Python)
+- **Descarga**: yt-dlp
+- **Empaquetado**: PyInstaller
+- **Threading**: Para operaciones asíncronas
 
 ## 📝 API Endpoints
 
