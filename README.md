@@ -79,6 +79,8 @@ check_deployment.bat
 python check_deployment.py
 ```
 
+📖 **[Ver guía completa del Deployment Checker](DEPLOYMENT_CHECKER_GUIDE.md)**
+
 ### Heroku (Recomendado)
 
 1. **Crea una cuenta en [Heroku](https://heroku.com)**
