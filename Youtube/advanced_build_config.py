@@ -11,16 +11,12 @@ def create_advanced_spec():
 # MediaDownloader - Configuración avanzada PyInstaller
 
 import os
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
 block_cipher = None
 
-# Datos adicionales para yt-dlp
-yt_dlp_datas = collect_data_files('yt_dlp')
-
 # Módulos ocultos completos
 hidden_imports = [
-    # Core yt-dlp
+    # Core yt-dlp - solo módulos esenciales
     'yt_dlp',
     'yt_dlp.extractor',
     'yt_dlp.extractor.common',
@@ -28,10 +24,14 @@ hidden_imports = [
     'yt_dlp.extractor.tiktok',
     'yt_dlp.extractor.instagram',
     'yt_dlp.extractor.facebook',
+    'yt_dlp.extractor.generic',
     'yt_dlp.downloader',
     'yt_dlp.downloader.http',
+    'yt_dlp.downloader.fragment',
     'yt_dlp.postprocessor',
+    'yt_dlp.postprocessor.common',
     'yt_dlp.postprocessor.ffmpeg',
+    'yt_dlp.utils',
     
     # Tkinter completo
     'tkinter',
@@ -39,43 +39,48 @@ hidden_imports = [
     'tkinter.messagebox',
     'tkinter.filedialog',
     'tkinter.font',
+    '_tkinter',
     
-    # Dependencias de red
+    # Dependencias de red esenciales
     'urllib3',
     'urllib3.util',
     'urllib3.util.retry',
+    'urllib3.util.ssl_',
     'urllib3.exceptions',
+    'urllib3.connection',
+    'urllib3.poolmanager',
     'certifi',
     'ssl',
     'socket',
     'http.client',
     'http.cookiejar',
+    'email',
+    'email.mime',
     
     # JSON y codificación
     'json',
-    'base64',
     'hashlib',
     'hmac',
+    're',
     
     # Sistema
     'threading',
     'subprocess',
     'tempfile',
     'shutil',
+    'platform',
+    'locale',
     
-    # Imagen
-    'PIL',
-    'PIL.Image',
-    'PIL.ImageTk',
-    'PIL.ImageDraw',
-    'PIL.ImageFont',
+    # Dependencias de brotli y otras compresiones
+    'brotli',
+    'brotlicffi',
 ]
 
 a = Analysis(
     ['Youtube.py'],
-    pathex=[os.getcwd()],
+    pathex=[],
     binaries=[],
-    datas=yt_dlp_datas,
+    datas=[],
     hiddenimports=hidden_imports,
     hookspath=[],
     hooksconfig={},
@@ -84,10 +89,12 @@ a = Analysis(
         # Excluir librerías pesadas innecesarias
         'matplotlib', 'numpy', 'scipy', 'pandas',
         'PyQt5', 'PyQt6', 'PySide2', 'PySide6',
-        'django', 'flask', 'tornado',
-        'IPython', 'jupyter',
-        'test', 'unittest', 'pytest',
-        'pdb', 'pydoc',
+        'django', 'flask', 'tornado', 'werkzeug',
+        'IPython', 'jupyter', 'notebook',
+        'test', 'unittest', 'pytest', 'nose',
+        'pdb', 'pydoc', 'doctest',
+        'pip', 'setuptools', 'wheel',
+        'PIL.ImageQt',
     ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
@@ -95,22 +102,9 @@ a = Analysis(
     noarchive=False,
 )
 
-# Filtrar archivos innecesarios
-def filter_binaries(binaries):
-    filtered = []
-    exclude_patterns = [
-        'api-ms-win', 'ucrtbase', 'msvcp', 'vcruntime',
-        'Qt5', 'Qt6', '_testcapi', 'tcl85', 'tk85'
-    ]
-    
-    for binary in binaries:
-        name = binary[0].lower()
-        if not any(pattern in name for pattern in exclude_patterns):
-            filtered.append(binary)
-    
-    return filtered
-
-a.binaries = filter_binaries(a.binaries)
+# Filtrar archivos innecesarios para reducir tamaño
+a.datas = [x for x in a.datas if not x[0].startswith('tk/demos')]
+a.datas = [x for x in a.datas if not x[0].startswith('tcl/tzdata')]
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
@@ -121,15 +115,15 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='Apayku Medios',
+    name='ApayKuMedias',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     upx_exclude=[
         'vcruntime140.dll',
-        'msvcp140.dll',
-        'api-ms-win*.dll'
+        'python*.dll',
+        '_tkinter.pyd',
     ],
     runtime_tmpdir=None,
     console=False,
@@ -140,11 +134,6 @@ exe = EXE(
     icon='media_downloader_icon.ico',
     version='version_info.txt'
 )
-
-# Post-procesamiento para limpiar archivos
-import shutil
-if os.path.exists('build'):
-    shutil.rmtree('build')
 '''
     
     with open('media_downloader_advanced.spec', 'w', encoding='utf-8') as f:

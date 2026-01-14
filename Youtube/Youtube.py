@@ -3,10 +3,7 @@ import os
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import threading
-import sys
 import time
-import base64
-from io import BytesIO
 
 class CompactMediaDownloader:
     def __init__(self, root):
@@ -401,8 +398,7 @@ class CompactMediaDownloader:
         }
         
         if "MP3" in format_choice:
-            # Usar FFmpeg portable descargado
-            ffmpeg_path = r"C:\ffmpeg\ffmpeg-master-latest-win64-gpl\bin"
+            # FFmpeg - buscar en PATH del sistema primero
             opts.update({
                 'format': 'bestaudio/best',
                 'postprocessors': [{
@@ -410,7 +406,6 @@ class CompactMediaDownloader:
                     'preferredcodec': 'mp3',
                     'preferredquality': '192',
                 }],
-                'ffmpeg_location': ffmpeg_path,  # Usar nuestra instalación portable
             })
         elif "1080p" in format_choice:
             opts['format'] = 'best[height<=1080]/best'
