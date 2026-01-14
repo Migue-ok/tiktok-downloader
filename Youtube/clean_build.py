@@ -17,7 +17,11 @@ def get_size_mb(path):
     try:
         for entry in Path(path).rglob('*'):
             if entry.is_file():
-                total += entry.stat().st_size
+                try:
+                    total += entry.stat().st_size
+                except (PermissionError, OSError) as e:
+                    # Ignorar archivos a los que no tenemos acceso
+                    continue
     except Exception:
         pass
     return total / (1024 * 1024)

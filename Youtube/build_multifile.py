@@ -10,6 +10,10 @@ import sys
 import subprocess
 import shutil
 
+# Constantes
+ICON_FILENAME = 'media_downloader_icon.ico'
+APP_NAME = 'ApayKuMedias'
+
 
 def create_optimized_spec():
     """Crear .spec optimizado para empaquetado en múltiples archivos"""
@@ -80,7 +84,7 @@ exe = EXE(
     a.scripts,
     [],  # NO incluir a.binaries, a.zipfiles, a.datas aquí
     exclude_binaries=True,  # ESTO ES CLAVE para múltiples archivos
-    name='ApayKuMedias',
+    name='{app_name}',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -90,7 +94,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='media_downloader_icon.ico' if os.path.exists('media_downloader_icon.ico') else None,
+    icon='{icon_filename}' if os.path.exists('{icon_filename}') else None,
 )
 
 # COLLECT crea el directorio con múltiples archivos
@@ -106,9 +110,11 @@ coll = COLLECT(
         'python*.dll',
         '_tkinter.pyd',
     ],
-    name='ApayKuMedias',
+    name='{app_name}',
 )
 '''
+    
+    spec_content = spec_content.format(app_name=APP_NAME, icon_filename=ICON_FILENAME)
     
     with open('Youtube_multifile.spec', 'w', encoding='utf-8') as f:
         f.write(spec_content)
@@ -177,7 +183,7 @@ def build_executable(spec_file):
 
 def show_results():
     """Mostrar resultados del build"""
-    dist_dir = 'dist/ApayKuMedias'
+    dist_dir = f'dist/{APP_NAME}'
     
     if not os.path.exists(dist_dir):
         print("❌ No se encontró el directorio de distribución")
@@ -206,10 +212,10 @@ def show_results():
                 print(f"  {'📌' if item.endswith('.exe') else '📄'} {item:<40} {size_mb:>8.2f} MB")
     
     print(f"\n📊 Total: {file_count} archivos, {total_size/(1024*1024):.2f} MB")
-    print(f"\n🚀 Ejecutar: {dist_dir}/ApayKuMedias.exe")
+    print(f"\n🚀 Ejecutar: {dist_dir}/{APP_NAME}.exe")
     print("\n💡 Distribución:")
     print(f"   • Copiar toda la carpeta '{os.path.basename(dist_dir)}' completa")
-    print("   • Los usuarios ejecutan ApayKuMedias.exe")
+    print(f"   • Los usuarios ejecutan {APP_NAME}.exe")
     print("   • Todos los archivos .dll y .pyd son necesarios")
     
 

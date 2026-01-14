@@ -10,6 +10,7 @@ import sys
 import hashlib
 import json
 from pathlib import Path
+from datetime import datetime
 
 
 def calculate_sha256(filepath):
@@ -215,7 +216,7 @@ def generate_build_info():
     total_size, file_count = analyze_build_size()
     
     build_info = {
-        'build_date': __import__('datetime').datetime.now().isoformat(),
+        'build_date': datetime.now().isoformat(),
         'total_files': file_count,
         'total_size_mb': round(total_size / (1024*1024), 2),
         'executable_path': 'dist/ApayKuMedias/ApayKuMedias.exe',
