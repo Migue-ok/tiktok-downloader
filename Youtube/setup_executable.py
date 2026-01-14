@@ -1,84 +1,23 @@
 # setup_executable.py
-# Script para crear ejecutable y generar icono
+# Script para configurar empaquetado con PyInstaller (simplificado)
 
 import os
 import sys
-from PIL import Image, ImageDraw, ImageFont
-import subprocess
 
 def create_icon():
-    """Crear icono personalizado con gato y símbolo de descarga"""
-    # Crear imagen de 256x256 para el icono
-    size = 256
-    img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    
-    # Fondo circular gradiente
-    for i in range(size//2):
-        alpha = int(255 * (1 - i/(size//2)))
-        color = (108, 92, 231, alpha)  # Color púrpura con transparencia
-        draw.ellipse([i, i, size-i, size-i], fill=color)
-    
-    # Fondo sólido circular
-    draw.ellipse([20, 20, size-20, size-20], fill=(108, 92, 231, 255))
-    draw.ellipse([25, 25, size-25, size-25], fill=(255, 255, 255, 255))
-    
-    try:
-        # Intentar usar una fuente del sistema
-        font_large = ImageFont.truetype("seguiemj.ttf", 80)  # Emoji font
-        font_medium = ImageFont.truetype("arial.ttf", 40)
-        font_small = ImageFont.truetype("arial.ttf", 24)
-    except:
-        try:
-            # Fuente alternativa
-            font_large = ImageFont.truetype("arial.ttf", 60)
-            font_medium = ImageFont.truetype("arial.ttf", 30)
-            font_small = ImageFont.truetype("arial.ttf", 18)
-        except:
-            # Fuente por defecto
-            font_large = ImageFont.load_default()
-            font_medium = ImageFont.load_default()
-            font_small = ImageFont.load_default()
-    
-    # Dibujar gato en el centro
-    cat_emoji = "🐱"
-    try:
-        # Intentar dibujar emoji
-        draw.text((size//2, size//2-20), cat_emoji, font=font_large, 
-                 fill=(108, 92, 231, 255), anchor="mm")
-    except:
-        # Si no funciona el emoji, usar texto
-        draw.text((size//2, size//2-20), "CAT", font=font_medium, 
-                 fill=(108, 92, 231, 255), anchor="mm")
-    
-    # Símbolo de descarga (flecha hacia abajo)
-    arrow_points = [
-        (size//2-15, size//2+40),
-        (size//2+15, size//2+40),
-        (size//2+15, size//2+25),
-        (size//2+25, size//2+35),
-        (size//2, size//2+55),
-        (size//2-25, size//2+35),
-        (size//2-15, size//2+25)
-    ]
-    draw.polygon(arrow_points, fill=(0, 184, 148, 255))
-    
-    # Texto "DL" (Download)
-    try:
-        draw.text((size//2, size//2+75), "DL", font=font_small, 
-                 fill=(108, 92, 231, 255), anchor="mm")
-    except:
-        pass
-    
-    # Guardar en diferentes tamaños para Windows
-    sizes = [16, 32, 48, 64, 128, 256]
+    """Crear icono simple sin dependencias de PIL"""
+    # Por ahora, no crear icono si PIL no está disponible
+    # El usuario puede proporcionar su propio .ico
     icon_path = "media_downloader_icon.ico"
     
-    # Crear archivo ICO con múltiples tamaños
-    img.save(icon_path, format='ICO', sizes=[(s, s) for s in sizes])
-    print(f"✅ Icono creado: {icon_path}")
-    
-    return icon_path
+    if os.path.exists(icon_path):
+        print(f"✅ Icono existente encontrado: {icon_path}")
+        return icon_path
+    else:
+        print(f"⚠️  No se encontró icono. Puedes:")
+        print(f"   1. Crear tu propio {icon_path}")
+        print(f"   2. O continuar sin icono personalizado")
+        return None
 
 def create_spec_file(icon_path):
     """Crear archivo .spec personalizado para PyInstaller"""
