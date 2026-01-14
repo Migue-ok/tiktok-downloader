@@ -47,16 +47,24 @@ Ver [README_BUILD.md](README_BUILD.md) para guía detallada.
 
 ### Limpiar builds anteriores:
 ```bash
-# Windows
+# Usar script de limpieza (recomendado)
+python clean_build.py
+
+# Manual - Windows
 rmdir /s /q build dist __pycache__
 
-# Linux/Mac
+# Manual - Linux/Mac
 rm -rf build dist __pycache__
 ```
 
 ### Build manual:
 ```bash
 pyinstaller --clean --noconfirm Youtube_multifile.spec
+```
+
+### Verificar build:
+```bash
+python verify_build.py
 ```
 
 ### Ver archivos generados:
